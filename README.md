@@ -1,8 +1,4 @@
-# AirCNC Part-1 Starter
-
-## Live Link
-Hosted in Firebase -> [AirCNC](https://aircnc-68403.web.app/)
-
+### [!screenshot](https://ibb.co/5Mw7tVq)
 ## Part-1 Complete Repository:
 Github Repo -> [Complete](https://github.com/shakilahmedatik/aircnc-part1-complete)
 
