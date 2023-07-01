@@ -1,13 +1,16 @@
-import React from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { FcGoogle } from "react-icons/fc";
+import React, { useRef } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import useAuth from "../../components/Hooks/useAuth";
 import toast from "react-hot-toast";
 import { TbFidgetSpinner } from "react-icons/tb";
+import SocialLogin from "../../components/Shared/SocialLogin";
 
 const Login = () => {
-	const { loading, setLoading, signIn, signInWithGoogle, resetPassword } = useAuth();
+	const { loading, setLoading, signIn, resetPassword } = useAuth();
 	const navigate = useNavigate();
+	const emailRef = useRef();
+	const location = useLocation();
+	const from = location.state?.from?.pathname || "/";
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
@@ -18,7 +21,7 @@ const Login = () => {
 			.then((res) => {
 				console.log(res.user);
 				toast.success("Successfully Login");
-				navigate("/");
+				navigate(from, { replace: true });
 			})
 			.catch((err) => {
 				setLoading(false);
@@ -27,12 +30,12 @@ const Login = () => {
 			});
 	};
 
-	const handleGoogleSignIn = () => {
-		signInWithGoogle()
-			.then((res) => {
-				console.log(res.user);
-				toast.success("Successfully Login");
-				navigate("/");
+	const handleReset = () => {
+		const email = emailRef.current.value;
+		resetPassword(email)
+			.then(() => {
+				toast.success("Please Check Your Email For Reset Password");
+				setLoading(false);
 			})
 			.catch((err) => {
 				setLoading(false);
@@ -40,6 +43,7 @@ const Login = () => {
 				toast.error(err.message);
 			});
 	};
+
 	return (
 		<div className="flex justify-center items-center min-h-screen">
 			<div className="flex flex-col max-w-md p-6 rounded-md sm:p-10 bg-gray-100 text-gray-900">
@@ -58,6 +62,7 @@ const Login = () => {
 								Email address
 							</label>
 							<input
+								ref={emailRef}
 								type="email"
 								name="email"
 								id="email"
@@ -97,7 +102,9 @@ const Login = () => {
 					</div>
 				</form>
 				<div className="space-y-1">
-					<button className="text-xs hover:underline hover:text-rose-500 text-gray-400">
+					<button
+						onClick={handleReset}
+						className="text-xs hover:underline hover:text-rose-500 text-gray-400">
 						Forgot password?
 					</button>
 				</div>
@@ -106,13 +113,7 @@ const Login = () => {
 					<p className="px-3 text-sm dark:text-gray-400">Login with social accounts</p>
 					<div className="flex-1 h-px sm:w-16 dark:bg-gray-700"></div>
 				</div>
-				<div
-					onClick={handleGoogleSignIn}
-					className="flex justify-center items-center space-x-2 border m-3 p-2 border-gray-300 border-rounded cursor-pointer rounded-md">
-					<FcGoogle size={32} />
-
-					<p>Continue with Google</p>
-				</div>
+				<SocialLogin />
 				<p className="px-6 text-sm text-center text-gray-400">
 					Don't have an account yet?{" "}
 					<Link
