@@ -43,7 +43,10 @@ const MenuDropdown = () => {
 						</Link>
 						{user ? (
 							<div
-								onClick={logOut}
+								onClick={() => {
+									logOut();
+									setIsOpen(false);
+								}}
 								className="px-4 py-3 hover:text-rose-500  hover:bg-neutral-100 transition font-semibold cursor-pointer">
 								Logout
 							</div>
