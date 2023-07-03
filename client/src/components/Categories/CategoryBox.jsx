@@ -30,7 +30,8 @@ const CategoryBox = ({ label, icon: Icon }) => {
 	return (
 		<div
 			onClick={handleClick}
-			className="flex flex-col justify-center items-center gap-2 p-3 border-b-2 hover:text-[#F43F5E] border-transparent cursor-pointer text-neutral-500">
+			className="flex flex-col justify-center items-center gap-2 p-3 border-b-2 hover:text-[#F43F5E] border-transparent cursor-pointer text-neutral-500 pt-28 pb-20"
+		>
 			<Icon size={26} />
 			<div className="text-sm font-medium">{label}</div>
 		</div>

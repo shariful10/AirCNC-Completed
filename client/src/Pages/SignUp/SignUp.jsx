@@ -70,7 +70,7 @@ const SignUp = () => {
 					onSubmit={handleSubmit}
 					noValidate=""
 					action=""
-					className="space-y-6 ng-untouched ng-pristine ng-valid">
+					className="space-y-6">
 					<div className="space-y-4">
 						<div>
 							<label htmlFor="email" className="block mb-2 text-sm">
