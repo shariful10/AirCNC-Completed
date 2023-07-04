@@ -4,6 +4,7 @@ import SocialLogin from "../../components/Shared/SocialLogin";
 import useAuth from "../../components/Hooks/useAuth";
 import { TbFidgetSpinner } from "react-icons/tb";
 import { toast } from "react-hot-toast";
+import { saveUser } from "../../API/auth";
 
 const SignUp = () => {
 	const { loading, setLoading, createUser, updateUserProfile } = useAuth();
@@ -32,11 +33,12 @@ const SignUp = () => {
 				const imageUrl = imageData.data.display_url;
 				createUser(email, password)
 					.then((res) => {
-                        const loggedUser = res.user;
-						console.log(loggedUser);
+						// const loggedUser = res.user;
+						// console.log(loggedUser);
 						updateUserProfile(name, imageUrl)
 							.then(() => {
 								toast.success("Successfully Sign Up");
+								saveUser(res.user);
 								navigate(from, { replace: true });
 							})
 							.catch((err) => {
@@ -66,11 +68,7 @@ const SignUp = () => {
 					<h1 className="my-3 text-4xl font-bold">Sign Up</h1>
 					<p className="text-sm text-gray-400">Welcome to AirCNC</p>
 				</div>
-				<form
-					onSubmit={handleSubmit}
-					noValidate=""
-					action=""
-					className="space-y-6">
+				<form onSubmit={handleSubmit} noValidate="" action="" className="space-y-6">
 					<div className="space-y-4">
 						<div>
 							<label htmlFor="email" className="block mb-2 text-sm">
@@ -124,7 +122,8 @@ const SignUp = () => {
 					<div>
 						<button
 							type="submit"
-							className="bg-rose-500 w-full rounded-md py-3 text-white">
+							className="bg-rose-500 w-full rounded-md py-3 text-white"
+						>
 							{loading ? (
 								<TbFidgetSpinner className="m-auto animate-spin h-6 w-6" />
 							) : (
@@ -138,11 +137,6 @@ const SignUp = () => {
 					<p className="px-3 text-sm dark:text-gray-400">Signup with social accounts</p>
 					<div className="flex-1 h-px sm:w-16 dark:bg-gray-700"></div>
 				</div>
-				{/* <div className="flex justify-center items-center space-x-2 border m-3 p-2 border-gray-300 border-rounded cursor-pointer">
-					<FcGoogle size={32} />
-
-					<p>Continue with Google</p>
-				</div> */}
 				<SocialLogin />
 				<p className="px-6 text-sm text-center text-gray-400">
 					Already have an account?{" "}
