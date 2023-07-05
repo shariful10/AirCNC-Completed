@@ -5,6 +5,11 @@ import useAuth from "../../components/Hooks/useAuth";
 
 const AddRoom = () => {
 	const { user } = useAuth();
+	const [dates, setDates] = useState({
+		startDate: new Date(),
+		endDate: new Date(),
+		key: "selection",
+	});
 	const [loading, setLoading] = useState(false);
 	const [uploadButtonText, setUploadButtonText] = useState("Upload Image");
 
@@ -14,8 +19,8 @@ const AddRoom = () => {
 		const form = e.target;
 		const location = form.location.value;
 		const title = form.title.value;
-		// const from = dates.startDate;
-		// const to = dates.endDate;
+		const from = dates.startDate;
+		const to = dates.endDate;
 		const price = form.price.value;
 		const total_guest = form.total_guest.value;
 		const bedrooms = form.bedrooms.value;
@@ -43,7 +48,9 @@ const AddRoom = () => {
 						email: user?.email,
 					},
 					category,
+					description,
 				};
+				console.log(roomData);
 				setLoading(false);
 			})
 			.catch((err) => {
@@ -58,9 +65,15 @@ const AddRoom = () => {
 		setUploadButtonText(image.name);
 	};
 
+	const handleDates = (ranges) => {
+		setDates(ranges.selection);
+	};
+
 	return (
 		<AddRoomForm
+			dates={dates}
 			loading={loading}
+			handleDates={handleDates}
 			handleSubmit={handleSubmit}
 			uploadButtonText={uploadButtonText}
 			handleImageChange={handleImageChange}
