@@ -112,7 +112,7 @@ const AddRoomForm = ({
 								</label>
 								<input
 									className="w-full px-4 py-3 text-gray-800 border border-rose-300 focus:outline-rose-500 rounded-md "
-									name="total_guest"
+									name="guests"
 									id="guest"
 									type="number"
 									placeholder="Total guest"

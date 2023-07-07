@@ -2,7 +2,7 @@ import React from "react";
 import Calender from "./Calender";
 import Button from "../Button/Button";
 
-const RoomReservation = () => {
+const RoomReservation = ({ roomData }) => {
 	return (
 		<div className="bg-white rounded-xl border border-neutral-200 overflow-hidden">
 			<div className="flex flex-row items-center gap-1 p-4">
@@ -10,10 +10,12 @@ const RoomReservation = () => {
 				<div className="font-normal text-neutral-600">Night</div>
 			</div>
 			<hr />
-			<Calender />
+			<div className="flex justify-center">
+				<Calender roomData={roomData} />
+			</div>
 			<hr />
 			<div className="p-4">
-				<Button label='Reserve'/>
+				<Button label="Reserve" />
 			</div>
 			<hr />
 			<div className="p-4 flex flex-row items-center justify-between font-semibold text-lg">

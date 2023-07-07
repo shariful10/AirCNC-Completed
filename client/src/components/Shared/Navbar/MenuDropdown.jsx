@@ -4,10 +4,26 @@ import useAuth from "../../Hooks/useAuth";
 import { AiOutlineMenu } from "react-icons/ai";
 import { HiOutlineX } from "react-icons/hi";
 import Avatar from "./Avatar";
+import HostRequestModal from "../../Modal/HostRequestModal";
+import { becomeHost } from "../../../API/auth";
+import { toast } from "react-hot-toast";
 
 const MenuDropdown = () => {
 	const { user, logOut } = useAuth();
 	const [isOpen, setIsOpen] = useState(false);
+	const [modal, setModal] = useState(false);
+
+	const modalHandler = (email) => {
+		becomeHost(email).then((data) => {
+			console.log(data);
+			toast.success(`${user.displayName} You Are Host Now, Post Rooms!`);
+			closeModal();
+		});
+	};
+
+	const closeModal = () => {
+		setModal(false);
+	};
 
 	// const toggleOpen = useCallback(() => {
 	// 	setIsOpen((value) => !value);
@@ -16,13 +32,17 @@ const MenuDropdown = () => {
 	return (
 		<div className="relative">
 			<div className="flex flex-row items-center gap-3">
-				<div className="hidden md:block text-sm font-semibold py-3 px-4 rounded-full hover:bg-neutral-100 transition cursor-pointer">
+				<div
+					onClick={() => setModal(true)}
+					className="hidden md:block text-sm font-semibold py-3 px-4 rounded-full hover:bg-neutral-100 transition cursor-pointer"
+				>
 					AirCNC Home
 				</div>
 				{/* Droupdown Menu */}
 				<div
 					onClick={() => setIsOpen(!isOpen)}
-					className="p-4 md:px-4 md:py-2 border-[1px] border-neutral-200 flex flex-row items-center gap-3 rounded-full cursor-pointer hover:shadow-md transition">
+					className="p-4 md:px-4 md:py-2 border-[1px] border-neutral-200 flex flex-row items-center gap-3 rounded-full cursor-pointer hover:shadow-md transition"
+				>
 					{isOpen ? (
 						<HiOutlineX className="h-6 w-6" />
 					) : (
@@ -38,30 +58,43 @@ const MenuDropdown = () => {
 					<div className="flex flex-col cursor-pointer">
 						<Link
 							to="/"
-							className="block md:hidden px-4 py-3 hover:text-rose-500 hover:bg-neutral-100 transition font-semibold">
+							className="block md:hidden px-4 py-3 hover:text-rose-500 hover:bg-neutral-100 transition font-semibold"
+						>
 							Home
 						</Link>
 						{user ? (
-							<div
-								onClick={() => {
-									logOut();
-									setIsOpen(false);
-								}}
-								className="px-4 py-3 hover:text-rose-500  hover:bg-neutral-100 transition font-semibold cursor-pointer">
-								Logout
-							</div>
+							<>
+								<Link
+									onClick={() => setIsOpen(false)}
+									to="/dashboard"
+									className="px-4 py-3 hover:text-rose-500 hover:bg-neutral-100 transition font-semibold"
+								>
+									Dashboard
+								</Link>
+								<div
+									onClick={() => {
+										logOut();
+										setIsOpen(false);
+									}}
+									className="px-4 py-3 hover:text-rose-500  hover:bg-neutral-100 transition font-semibold cursor-pointer"
+								>
+									Logout
+								</div>
+							</>
 						) : (
 							<>
 								<Link
 									onClick={() => setIsOpen(false)}
 									to="/login"
-									className="px-4 py-3 hover:text-rose-500 hover:bg-neutral-100 transition font-semibold">
+									className="px-4 py-3 hover:text-rose-500 hover:bg-neutral-100 transition font-semibold"
+								>
 									Login
 								</Link>
 								<Link
 									onClick={() => setIsOpen(false)}
 									to="/signup"
-									className="px-4 py-3 hover:text-rose-500 hover:bg-neutral-100 transition font-semibold">
+									className="px-4 py-3 hover:text-rose-500 hover:bg-neutral-100 transition font-semibold"
+								>
 									Sign Up
 								</Link>
 							</>
@@ -69,6 +102,12 @@ const MenuDropdown = () => {
 					</div>
 				</div>
 			)}
+			<HostRequestModal
+				email={user?.email}
+				isOpen={modal}
+				modalHandler={modalHandler}
+				closeModal={closeModal}
+			/>
 		</div>
 	);
 };

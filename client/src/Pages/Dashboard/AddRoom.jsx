@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import AddRoomForm from "../../components/Forms/AddRoomForm";
 import { imageUpload } from "../../API/utils";
 import useAuth from "../../components/Hooks/useAuth";
+import { addRoom } from "../../API/rooms";
 
 const AddRoom = () => {
 	const { user } = useAuth();
@@ -22,7 +23,7 @@ const AddRoom = () => {
 		const from = dates.startDate;
 		const to = dates.endDate;
 		const price = form.price.value;
-		const total_guest = form.total_guest.value;
+		const guests = form.total_guest.value;
 		const bedrooms = form.bedrooms.value;
 		const bathrooms = form.bathrooms.value;
 		const description = form.description.value;
@@ -38,7 +39,7 @@ const AddRoom = () => {
 					from,
 					to,
 					price: parseFloat(price),
-					total_guest,
+					guests,
 					bedrooms,
 					bathrooms,
 					image: data.data.display_url,
@@ -50,7 +51,9 @@ const AddRoom = () => {
 					category,
 					description,
 				};
-				console.log(roomData);
+				addRoom(roomData)
+					.then((data) => console.log(data))
+					.catch((err) => console.log(err));
 				setLoading(false);
 			})
 			.catch((err) => {
