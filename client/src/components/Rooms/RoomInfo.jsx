@@ -11,9 +11,7 @@ const RoomInfo = ({ roomData }) => {
 					<div>Hosted by {name}</div>
 
 					<img
-						className="rounded-[100%]"
-						height="30"
-						width="30"
+						className="rounded-[100%] h-7 w-7"
 						alt="Avatar"
 						src={image}
 					/>

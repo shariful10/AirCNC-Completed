@@ -9,7 +9,7 @@ import { becomeHost } from "../../../API/auth";
 import { toast } from "react-hot-toast";
 
 const MenuDropdown = () => {
-	const { user, logOut } = useAuth();
+	const { user, logOut, role, setRole } = useAuth();
 	const [isOpen, setIsOpen] = useState(false);
 	const [modal, setModal] = useState(false);
 
@@ -17,6 +17,7 @@ const MenuDropdown = () => {
 		becomeHost(email).then((data) => {
 			console.log(data);
 			toast.success(`${user.displayName} You Are Host Now, Post Rooms!`);
+			setRole("host");
 			closeModal();
 		});
 	};
@@ -32,11 +33,17 @@ const MenuDropdown = () => {
 	return (
 		<div className="relative">
 			<div className="flex flex-row items-center gap-3">
-				<div
-					onClick={() => setModal(true)}
-					className="hidden md:block text-sm font-semibold py-3 px-4 rounded-full hover:bg-neutral-100 transition cursor-pointer"
-				>
-					AirCNC Home
+				<div className="hidden md:block text-sm font-semibold py-3 px-4 rounded-full transition cursor-pointer">
+					{!role && (
+						<button
+							onClick={() => setModal(true)}
+							title={!user && "You Have To Login First"}
+							disabled={!user}
+							className="disabled:cursor-not-allowed cursor-pointer hover:bg-neutral-100 py-3 px-4 rounded-full"
+						>
+							AirCNC Home
+						</button>
+					)}
 				</div>
 				{/* Droupdown Menu */}
 				<div
@@ -74,6 +81,7 @@ const MenuDropdown = () => {
 								<div
 									onClick={() => {
 										logOut();
+										setRole(null);
 										setIsOpen(false);
 									}}
 									className="px-4 py-3 hover:text-rose-500  hover:bg-neutral-100 transition font-semibold cursor-pointer"

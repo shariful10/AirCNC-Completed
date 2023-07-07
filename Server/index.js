@@ -44,6 +44,14 @@ async function run() {
 			res.send(result);
 		});
 
+		// Get User
+		app.get("/users/:email", async (req, res) => {
+			const email = req.params.email;
+			const query = { email: email };
+			const result = await usersCollection.findOne(query);
+			res.send(result);
+		});
+
 		// Save a Room Data in Database
 		app.post("/rooms", async (req, res) => {
 			const room = req.body;
