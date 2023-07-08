@@ -17,15 +17,17 @@ const RoomReservation = ({ roomData }) => {
 		setIsOpen(false);
 	};
 
-	// Price Calculations
+	// Price Calculation
 	const totalPrice =
 		parseFloat(formatDistance(new Date(roomData.to), new Date(roomData.from)).split(" ")[0]) *
 		roomData.price;
+
 	const [value, setValue] = useState({
-		startDate: new Date(roomData.from),
-		endDate: new Date(roomData.to),
+		startDate: new Date(roomData?.from),
+		endDate: new Date(roomData?.to),
 		key: "selection",
 	});
+	console.log(roomData);
 
 	// Booking State
 	const [bookingInfo, setBookingInfo] = useState({

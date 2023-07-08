@@ -62,6 +62,7 @@ const BookingModal = ({ modalHandler, closeModal, isOpen, bookingInfo }) => {
 										Price:{" "}
 										<span className="font-semibold text-green-900">
 											${bookingInfo.price}
+											{console.log(bookingInfo.price)}
 										</span>
 									</p>
 								</div>

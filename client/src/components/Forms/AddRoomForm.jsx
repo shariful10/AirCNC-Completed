@@ -2,6 +2,7 @@ import React from "react";
 import { DateRange } from "react-date-range";
 import { TbFidgetSpinner } from "react-icons/tb";
 import { categories } from "../Categories/categoriesData";
+
 const AddRoomForm = ({
 	handleSubmit,
 	dates,

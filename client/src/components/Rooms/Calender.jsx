@@ -1,10 +1,10 @@
 import React from "react";
 import { DateRange } from "react-date-range";
 
-const Calender = ({ value, handleSelect }) => {
+const DatePicker = ({ value, handleSelect }) => {
 	return (
 		<DateRange
-			rangeColors={["#f43f5e"]}
+			rangeColors={["#F43F5E"]}
 			ranges={[value]}
 			onChange={handleSelect}
 			date={value.startDate}
@@ -16,4 +16,4 @@ const Calender = ({ value, handleSelect }) => {
 	);
 };
 
-export default Calender;
+export default DatePicker;

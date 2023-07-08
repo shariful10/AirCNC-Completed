@@ -3,9 +3,12 @@ import AddRoomForm from "../../components/Forms/AddRoomForm";
 import { imageUpload } from "../../API/utils";
 import useAuth from "../../components/Hooks/useAuth";
 import { addRoom } from "../../API/rooms";
+import { toast } from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 const AddRoom = () => {
 	const { user } = useAuth();
+	const navigate = useNavigate();
 	const [dates, setDates] = useState({
 		startDate: new Date(),
 		endDate: new Date(),
@@ -23,12 +26,13 @@ const AddRoom = () => {
 		const from = dates.startDate;
 		const to = dates.endDate;
 		const price = form.price.value;
-		const guests = form.total_guest.value;
+		const guests = form.guests.value;
 		const bedrooms = form.bedrooms.value;
 		const bathrooms = form.bathrooms.value;
 		const description = form.description.value;
 		const category = form.category.value;
 		const image = form.image.files[0];
+		setUploadButtonText("Uploading...");
 
 		// Upload image
 		imageUpload(image)
@@ -52,7 +56,14 @@ const AddRoom = () => {
 					description,
 				};
 				addRoom(roomData)
-					.then((data) => console.log(data))
+					.then((data) => {
+						console.log(data);
+						setUploadButtonText("Uploaded!");
+						setLoading(false);
+						toast.success("Room Added Successfully");
+						navigate("/dashboard/my-listings");
+						form.reset();
+					})
 					.catch((err) => console.log(err));
 				setLoading(false);
 			})

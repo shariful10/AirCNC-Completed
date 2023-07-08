@@ -1,20 +1,20 @@
 import React, { useEffect, useState } from "react";
-import useAuth from "./../../components/Hooks/useAuth";
-import { getBookings } from "../../API/Booking";
-import TableRow from "../../components/Dashboard/TableRow";
+import useAuth from "../../components/Hooks/useAuth";
+import { getRooms } from "../../API/rooms";
+import RoomDataRow from "../../components/Dashboard/RoomDataRow";
 
-const MyBookings = () => {
-	const [bookings, setBookings] = useState([]);
+const MyListings = () => {
 	const { user } = useAuth();
+	const [rooms, setRooms] = useState([]);
 
-	const fetchBookings = () => {
-		getBookings(user?.email).then((data) => {
-			setBookings(data);
+	const fetchRooms = () => {
+		getRooms(user?.email).then((data) => {
+			setRooms(data);
 		});
 	};
 
 	useEffect(() => {
-		fetchBookings();
+		fetchRooms();
 	}, [user]);
 
 	return (
@@ -59,17 +59,23 @@ const MyBookings = () => {
 										scope="col"
 										className="px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal"
 									>
-										Action
+										Delete
+									</th>
+									<th
+										scope="col"
+										className="px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal"
+									>
+										Update
 									</th>
 								</tr>
 							</thead>
 							<tbody>
-								{bookings &&
-									bookings.map((booking) => (
-										<TableRow
-											key={booking._id}
-											booking={booking}
-											fetchBookings={fetchBookings}
+								{rooms &&
+									rooms.map((room) => (
+										<RoomDataRow
+											key={room?._id}
+											room={room}
+											fetchRooms={fetchRooms}
 										/>
 									))}
 							</tbody>
@@ -81,4 +87,4 @@ const MyBookings = () => {
 	);
 };
 
-export default MyBookings;
+export default MyListings;

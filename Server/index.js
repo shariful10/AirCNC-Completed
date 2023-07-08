@@ -71,6 +71,20 @@ async function run() {
 			res.send(result);
 		});
 
+		// Delete a single Room
+		app.delete("/rooms/:id", async (req, res) => {
+			const id = req.params.id;
+			const result = await roomsCollection.deleteOne({ _id: new ObjectId(id) });
+			res.send(result);
+		});
+
+		// Get a single Room
+		app.get("/rooms/:email", async (req, res) => {
+			const email = req.params.email;
+			const result = await roomsCollection.find({ "host.email": email }).toArray();
+			res.send(result);
+		});
+
 		// Update a Room Data in Database
 		app.patch("/rooms/status/:id", async (req, res) => {
 			const id = req.params.id;

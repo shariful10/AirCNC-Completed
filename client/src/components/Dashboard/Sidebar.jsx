@@ -1,17 +1,18 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
-import { AuthContext } from "../../providers/AuthProvider";
 import Logo from "../Shared/Navbar/Logo";
 import { GrLogout } from "react-icons/gr";
 import { FcSettings } from "react-icons/fc";
 import { AiOutlineBars } from "react-icons/ai";
 import { BsFillHouseAddFill } from "react-icons/bs";
 import GuestMenu from "./GuestMenu";
+import useAuth from "./../Hooks/useAuth";
+import HostMenu from "./HostMenu";
 
 const Sidebar = () => {
 	const navigate = useNavigate();
 	const [toggle, setToggle] = useState(false);
-	const { user, logOut } = useContext(AuthContext);
+	const { user, logOut, role, setRole } = useAuth();
 	const [isActive, setActive] = useState("false");
 
 	const toggleHandler = (event) => {
@@ -82,27 +83,31 @@ const Sidebar = () => {
 					{/* Nav Items */}
 					<div className="flex flex-col justify-between flex-1 mt-6">
 						<nav>
-							<>
-								<label
-									htmlFor="Toggle3"
-									className="inline-flex w-full justify-center items-center px-2 rounded-md cursor-pointer text-gray-800"
-								>
-									<input
-										onChange={toggleHandler}
-										id="Toggle3"
-										type="checkbox"
-										className="hidden peer"
-									/>
-									<span className="px-4 py-1 rounded-l-md text-white bg-rose-400 peer-checked:bg-gray-300 peer-checked:text-gray-800 font-medium">
-										Guest
-									</span>
-									<span className="px-4 py-1 rounded-r-md bg-gray-300 peer-checked:bg-rose-400 peer-checked:text-white font-medium">
-										Host
-									</span>
-								</label>
-								{/* Menu Links */}
+							{role && role === "host" ? (
+								<>
+									<label
+										htmlFor="Toggle3"
+										className="inline-flex w-full justify-center items-center px-2 rounded-md cursor-pointer text-gray-800"
+									>
+										<input
+											onChange={toggleHandler}
+											id="Toggle3"
+											type="checkbox"
+											className="hidden peer"
+										/>
+										<span className="px-4 py-1 rounded-l-md text-white bg-rose-400 peer-checked:bg-gray-300 peer-checked:text-gray-800 font-medium">
+											Guest
+										</span>
+										<span className="px-4 py-1 rounded-r-md bg-gray-300 peer-checked:bg-rose-400 peer-checked:text-white font-medium">
+											Host
+										</span>
+									</label>
+									{/* Menu Links */}
+									{toggle ? <HostMenu /> : <GuestMenu />}
+								</>
+							) : (
 								<GuestMenu />
-							</>
+							)}
 						</nav>
 					</div>
 				</div>
