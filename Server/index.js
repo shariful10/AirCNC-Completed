@@ -34,12 +34,11 @@ async function run() {
 		app.put("/users/:email", async (req, res) => {
 			const email = req.params.email;
 			const user = req.body;
-			const query = { email: email };
 			const options = { upsert: true };
 			const updateDoc = {
 				$set: user,
 			};
-			const result = await usersCollection.updateOne(query, updateDoc, options);
+			const result = await usersCollection.updateOne({ email: email }, updateDoc, options);
 			console.log(result);
 			res.send(result);
 		});
@@ -72,10 +71,42 @@ async function run() {
 			res.send(result);
 		});
 
+		// Update a Room Data in Database
+		app.patch("/rooms/status/:id", async (req, res) => {
+			const id = req.params.id;
+			const status = req.body.status;
+			const updateDoc = {
+				$set: {
+					booked: status,
+				},
+			};
+			const update = await roomsCollection.updateOne({ _id: new ObjectId(id) }, updateDoc);
+			res.send(update);
+		});
+
+		// Get Bookings For Gest
+		app.get("/bookings", async (req, res) => {
+			const email = req.query.email;
+
+			if (!email) {
+				res.send([]);
+			}
+
+			const result = await bookingsCollection.find({ "guest.email": email }).toArray();
+			res.send(result);
+		});
+
 		// Save a Bookings Data in Database
 		app.post("/bookings", async (req, res) => {
 			const booking = req.body;
 			const result = await bookingsCollection.insertOne(booking);
+			res.send(result);
+		});
+
+		// Delete a Bookings Data in Database
+		app.delete("/bookings/:id", async (req, res) => {
+			const id = req.params.id;
+			const result = await bookingsCollection.deleteOne({ _id: new ObjectId(id) });
 			res.send(result);
 		});
 
